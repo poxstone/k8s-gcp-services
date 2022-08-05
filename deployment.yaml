@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java-deployment
+  labels:
+    app: java
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: java
+  template:
+    metadata:
+      labels:
+        app: java
+    spec:
+      containers:
+      - name: java
+        image: gcr.io/xertica-delivery-infra-service/ubuntu20-jdk8
+        env:
+        - name: DOMAIN_NAME
+          value: "domain1"
+        ports:
+        - containerPort: 8080
+        - containerPort: 8181
+        - containerPort: 4848
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          failureThreshold: 10
+          periodSeconds: 15
+          timeoutSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          failureThreshold: 3
+          periodSeconds: 15
+          initialDelaySeconds: 60
+          timeoutSeconds: 10
+
+      #- name: flask
+      #  image: poxstone/flask_any_response
+      #  ports:
+      #  - containerPort: 5000
+      #  env:
+      #  - name: 'APP_PORT'
+      #    value: '5000'
+      
+
