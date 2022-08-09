@@ -16,10 +16,17 @@ spec:
     spec:
       containers:
       - name: java
-        image: gcr.io/xertica-delivery-infra-service/ubuntu20-jdk8
+        #image: gcr.io/xertica-delivery-infra-service/ubuntu20-jdk8
+        image: ucalgary/glassfish:latest
         env:
         - name: DOMAIN_NAME
           value: "domain1"
+        - name: AS_ADMIN_PASSWORD
+          value: "abcd1234"
+        - name: AS_ADMIN_ENABLE_SECURE
+          value: "1"
+        - name: GLASSFISH_HOME
+          value: "/opt/glassfish4"
         ports:
         - containerPort: 8080
         - containerPort: 8181
